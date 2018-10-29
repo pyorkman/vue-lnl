@@ -1,0 +1,217 @@
+<div id="app" class="container">
+    <header class="nav-bar"><span class="title">The Good Cookies</span></header>
+    <div class ="product">
+        <div class="product-image">
+            <img v-bind:src="image" />
+        </div>
+
+        <div class="product-details">
+            <h1 class="product-info"> {{ product }} </h1>
+            
+            <div class="cookie-box" >
+                <ul v-for="variant in variants"
+                    :key="variant.variantId" >
+                    <li @mouseover="updateProduct(variant.variantImage)" class="variant-select">{{ variant.variantFlavor }}</li>
+                </ul>
+            </div> 
+
+            <ul class="details-list">
+                <li v-for="detail in details">{{ detail }}</li>
+            </ul>
+
+
+            <div class="stock-display">
+                <p v-if="inStock">In Stock</p>
+                <p v-else>Out Of Stock</p>
+            </div>
+            <div class="cart">
+                <p>Cart ( {{cart}} )</p>
+                <button v-on:click="addToCart"
+                    :disabled="!inStock"
+                    :class="{disabledButton: !inStock}">
+                    Add to Cart
+                </button>
+                <button @click="removeFromCart">Remove from cart</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src='https://unpkg.com/vue'></script>
+<script>
+    new Vue({
+    el: '#app',
+    data: { 
+        product: 'Cookies',
+        image: './images/chocolatechipcookies.jpg' ,
+        details: ['Not gluten free', 'So delicious', '100% Organic Sugar from Denmark', 'Another quality'],
+        stock: 100,
+        inStock: true,
+        variants: [
+        {
+            variantId: 11,
+            variantFlavor: 'Chocolate Chip Cookies',
+            variantImage: './images/chocolatechipcookies.jpg' ,
+            variantQuantity: 102
+        },
+        {
+            variantId: 12,
+            variantFlavor: 'Double Chocolate Cookies',
+            variantImage: './images/doublechocolatecookies.jpg' ,
+            variantQuantity: 9
+        },
+        {
+            variantId: 13,
+            variantFlavor: 'Sugar Cookies',
+            variantImage: './images/sugarcookies.jpg' ,
+            variantQuantity: 0
+        }],
+        cart: 0
+        },
+
+       methods: {
+            addToCart: function() {
+                this.cart += 1
+            },
+            updateProduct: function(variantImage) {  
+                this.image = variantImage
+            },
+            removeFromCart(){
+                this.cart -= 1
+            }
+        },
+        computed: {
+            image(){
+                return this.variants[this.selectedVariant].variantImage
+            },
+            inStock(){
+                return this.variants[this.selectedVariant].variantQuantity
+            },
+        }
+    })
+</script>
+
+<style>
+
+body {
+  font-family: tahoma;
+  color: #282828;
+  margin: 0px;
+}
+
+.nav-bar {
+    background:  #84CF6A;
+    height: 40px;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 30px;
+    font-weight:bold;
+    text-shadow:
+		-1px -1px 0 #777,
+		1px -1px 0 #777,
+		-1px 1px 0 #777,
+		1px 1px 0 #777;
+    color: white;
+    }
+
+    .title{
+        padding-left: 15px;
+    }
+
+    .product {
+    display: flex;
+    }
+
+    img {
+    border: 1px solid #d8d8d8;
+    width: 90%;
+    margin: 5px;
+    box-shadow: 0px .5px 1px #d8d8d8;
+    }
+
+    .product-image {
+    width: 450px;
+    }
+
+    .product-details{
+        float: right;
+        width: 50%;
+    }
+    .product-info {
+    margin-top: 10px;
+    }
+
+    .variant-select{
+    float: left;
+    background: #CCCCCC;
+    list-style: none;
+    text-align: center;
+    padding: .5em;
+    margin: .3em;
+    width: 100px;
+    height: 90px;
+    line-height: 30px;
+    font-weight: bold;
+    border-radius: 10px;
+    border: 2px solid #777777;
+    }
+
+    .cookie-box {
+    float: left;
+    width: 200px;
+    }
+
+    .details-list{
+    float: left;
+    width: 65%;
+    }
+
+    .stock-display{
+    float: left;
+    width: 65%;
+    }
+
+    .cart {
+    width: 210px;
+    float: left;
+    border: 1px solid #d8d8d8;
+    padding: 5px 20px;
+    }
+
+    button {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 1em;
+    border: none;
+    background-color: #1E95EA;
+    color: white;
+    height: 50px;
+    width: 100px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    } 
+
+    .disabledButton {
+    background-color: #d8d8d8;
+    }
+
+    .review-form {
+    width: 30%;
+    padding: 20px;
+    border: 1px solid #d8d8d8;  
+    }
+
+    input {
+    width: 100%;  
+    height: 25px;
+    margin-bottom: 20px;
+    }
+
+    textarea {
+    width: 100%;
+    height: 60px;
+    }
+</style>
